@@ -38,12 +38,12 @@ $CFG = new stdClass();
 // will be stored.  This database must already have been created         //
 // and a username/password created to access it.                         //
 
-$CFG->dbtype    = 'mariadb';      // 'pgsql', 'mariadb', 'mysqli', 'auroramysql', 'sqlsrv' or 'oci'
+$CFG->dbtype    = getenv('DB_TYPE');      // 'pgsql', 'mariadb', 'mysqli', 'auroramysql', 'sqlsrv' or 'oci'
 $CFG->dblibrary = 'native';     // 'native' only at the moment
-$CFG->dbhost    = 'moodle.cen4w4e2uowj.us-east-1.rds.amazonaws.com';  // eg 'localhost' or 'db.isp.com' or IP
-$CFG->dbname    = 'moodle';     // database name, eg moodle
-$CFG->dbuser    = 'admin';   // your database username
-$CFG->dbpass    = 'Nissay1234';   // your database password
+$CFG->dbhost    = getenv('DB_HOST');  // eg 'localhost' or 'db.isp.com' or IP
+$CFG->dbname    = getenv('DB_NAME');     // database name, eg moodle
+$CFG->dbuser    = getenv('DB_USER');   // your database username
+$CFG->dbpass    = getenv('DB_PASS');   // your database password
 $CFG->prefix    = 'mdl_';       // prefix to use for all table names
 $CFG->dboptions = array(
     'dbpersist' => false,       // should persistent database connections be
@@ -162,7 +162,21 @@ $CFG->dboptions = array(
 // If you need both intranet and Internet access please read
 // http://docs.moodle.org/en/masquerading
 
-$CFG->wwwroot   = 'https://dev.efficient-skills.com/moodle';
+$CFG->wwwroot   = getenv('DOMAIN_NAME')+'/moodle';
+$CFG->dataroot  = '/var/www/moodledata';
+$CFG->admin     = 'admin';
+$CFG->directorypermissions = 02777;
+
+# ObjectFS Plugin Configuration
+$CFG->alternative_file_system_class = '\tool_objectfs\s3_file_system';
+$CFG->tool_objectfs_s3_bucket = getenv('S3_BUCKET_NAME');
+$CFG->tool_objectfs_s3_region = getenv('AWS_REGION');
+
+$CFG->tempdir = '/var/www/moodle_cache/temp';
+$CFG->cachedir = '/var/www/moodle_cache/cache';
+$CFG->localcachedir = '/var/www/moodle_cache/localcache';
+$CFG->session_handler_class = '\core\session\file';
+$CFG->session_file_save_path = '/var/www/moodle_cache/sessions';
 
 
 //=========================================================================
@@ -178,7 +192,6 @@ $CFG->wwwroot   = 'https://dev.efficient-skills.com/moodle';
 //
 // - On Windows systems you might specify something like 'c:\moodledata'
 
-$CFG->dataroot  = '/mnt/moodledata';
 
 // Whether the Moodle router is fully configured.
 //
@@ -326,11 +339,7 @@ $CFG->admin = 'admin';
 //         '/tempdir/'  => '/var/www/moodle/temp',      for custom $CFG->tempdir locations
 //         '/filedir'   => '/var/www/moodle/filedir',  // for custom $CFG->filedir locations
 //     );
-$CFG->tempdir = '/var/www/moodle_cache/temp';
-$CFG->cachedir = '/var/www/moodle_cache/cache';
-$CFG->localcachedir = '/var/www/moodle_cache/localcache';
-$CFG->session_handler_class = '\core\session\file';
-$CFG->session_file_save_path = '/var/www/moodle_cache/sessions';
+
 // Please note: It is *not* possible to use X-Sendfile with the per-request directory.
 // The directory is highly likely to have been deleted by the time the web server sends the file.
 //
@@ -1172,7 +1181,6 @@ $CFG->session_file_save_path = '/var/www/moodle_cache/sessions';
 // To set the alternative file storage system in config.php you can use the following setting, providing the
 // alternative system class name that will be auto-loaded by file_storage API.
 //
-$CFG->alternative_file_system_class = '\tool_objectfs\azure_file_system';
 //
 //=========================================================================
 // 15. CAMPAIGN CONTENT
