@@ -172,11 +172,11 @@ $CFG->alternative_file_system_class = '\tool_objectfs\s3_file_system';
 $CFG->tool_objectfs_s3_bucket = getenv('S3_BUCKET_NAME');
 $CFG->tool_objectfs_s3_region = getenv('AWS_REGION');
 
-$CFG->tempdir = '/var/www/moodle_cache/temp';
-$CFG->cachedir = '/var/www/moodle_cache/cache';
-$CFG->localcachedir = '/var/www/moodle_cache/localcache';
+$CFG->tempdir = '/var/www/moodletemp';
+$CFG->cachedir = '/var/www/moodlecache';
+$CFG->localcachedir = '/var/www/moodlelocalcache';
 $CFG->session_handler_class = '\core\session\file';
-$CFG->session_file_save_path = '/var/www/moodle_cache/sessions';
+$CFG->session_file_save_path = '/var/www/moodlesessions';
 
 
 //=========================================================================
